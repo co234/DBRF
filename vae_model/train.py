@@ -1,12 +1,6 @@
-"""main.py"""
-
 import argparse
-from email.policy import default
 import numpy as np
 import torch
-
-# from solver import Solver
-
 from main import train_model
 
 
@@ -41,7 +35,7 @@ if __name__ == "__main__":
     parser.add_argument('--y_dim', default=1, type=int, help='dimension of the output')
     parser.add_argument('--hidden_layer', default=15, type=int, help='hidden layer for the prediction net')
     # OPTIMIZATION
-    parser.add_argument('--lr_VAE', default=5e-3, type=float, help='learning rate of the VAE')
+    parser.add_argument('--lr_VAE', default=5e-4, type=float, help='learning rate of the VAE')
     parser.add_argument('--lr_D', default=5e-4, type=float, help='learning rate of the discriminator')    
     parser.add_argument('--dropout', default=0.15, type=float, help='dropout rate')
     parser.add_argument('--seed', default=64, type=int, help='random seed')

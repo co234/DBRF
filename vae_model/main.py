@@ -1,17 +1,15 @@
-from sympy import arg
 import numpy as np
-from mlp_vae import *
 import pickle 
-from fvae import *
-from loss import *
-from torch.nn import Softmax
 import torch.optim as optim
+import torch.nn.functional as F
+from torch.nn import Softmax
 from discriminator import Discriminator
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-import torch.nn.functional as F
 from utils import *
-
+from fvae import *
+from loss import *
+from mlp_vae import *
 from tqdm import tqdm
 
 
@@ -114,14 +112,9 @@ class train_model(object):
         X_train_encode = outputs_train['z_encoded'].detach().numpy()
         X_test_encode = outputs_test['z_encoded'].detach().numpy()
 
-
-
         model = LogisticRegression()
-        # fit the model on the training set
         model.fit(X_train_encode, self.input_data['y_noise'].squeeze().long())
-        # make predictions on the test set
         yhat = model.predict(X_test_encode)
-        # calculate classification accuracy
         acc = accuracy_score(self.target_data['y'].squeeze().long(), yhat)
         dp = compute_dp(self.target_data['s'].squeeze().long(),yhat)
 
@@ -185,7 +178,7 @@ class train_model(object):
             constrain_loss = self.xi*(tyy_entropy).mean()+ self.beta*tyb_entropy.mean() 
             s = sensitive_feature.unsqueeze(-1).float()
 
-            vae_recon_loss = self.mse(outputs['x_decoded'],feature) + self.alpha*self.bce(outputs['s_decoded'],s)
+            vae_recon_loss = self.mse(outputs['x_decoded'],feature) + self.alpha*self.bce(outputs['s_decoded'],s).mean()
             vae_kld = kl_divergence(outputs['z_enc_mu'], outputs['z_enc_logvar'])
 
             
@@ -216,7 +209,7 @@ class train_model(object):
         acc = get_accuracy(truth_res, pred_res)
     
         # print('[{}] vae_recon_loss:{:.3f} vae_tc_loss:{:.3f} D_tc_loss:{:.3f} supervison loss: {:.3f} ACC: {:.3f} '.format(
-        #                     epoch, vae_loss.item(), vae_tc_loss.item(), D_tc_loss.item(), lp.mean().item(),acc*100))
+        #                     epoch, vae_recon_loss.item(), vae_tc_loss.item(), D_tc_loss.item(), lp.mean().item(),acc*100))
 
 
 

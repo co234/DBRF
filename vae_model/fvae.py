@@ -25,7 +25,7 @@ class VAE(Module):
                  z_dim,
                  b_dim,
                  dropout_rate,
-                 activation=ReLU()):
+                 activation=LeakyReLU()):
         super().__init__()
         y_out_dim = 2 if y_dim == 1 else y_dim
        

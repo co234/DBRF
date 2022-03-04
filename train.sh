@@ -1,1 +1,2 @@
-python vae_model/train.py --dataset "adult" --epochs 50 --z_dim 15 --b_dim 1 --z_enc_dim 30 --x_dec_dim 30 --dropout 0.05 --beta 0.5 --xi 0.1 
+python vae_model/train.py --dataset "synthetic" --epochs 25 --z_dim 5 --b_dim 1 --z_enc_dim 10 --x_dec_dim 10 --dropout 0.00 --beta 0.6 --xi 0.1 
+# python vae_model/train.py --dataset "adult" --epochs 50 --z_dim 15 --b_dim 1 --z_enc_dim 30 --x_dec_dim 30 --dropout 0.05 --beta 0.5 --xi 0.1 
